@@ -129,6 +129,22 @@ def get_server_info() -> dict:
     }
 
 
+@mcp.custom_route("/", methods=["GET"])
+async def root():
+    """Root endpoint for browser access"""
+    from starlette.responses import JSONResponse
+    return JSONResponse({
+        "status": "running",
+        "server": "Manus MCP Server for Poke",
+        "version": "1.0.0",
+        "endpoints": {
+            "sse": "/sse",
+            "messages": "/messages/"
+        },
+        "tools": ["create_task", "get_task_status", "list_tasks", "continue_task", "get_server_info"]
+    })
+
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     host = "0.0.0.0"
