@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: manus-mcp-poke
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python src/server.py
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: MANUS_API_KEY
+        sync: false
+      - key: MANUS_API_BASE
+        value: https://api.manus.im/v1
+      - key: MANUS_AGENT_PROFILE
+        value: manus-1.6
