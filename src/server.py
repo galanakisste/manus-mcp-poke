@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Manus MCP Server for Poke - Render Deployment
+Manus MCP Server for Poke - Render Deployment with SSE
 Bridges Poke AI to Manus AI API using FastMCP
 """
 import os
@@ -134,11 +134,12 @@ if __name__ == "__main__":
     host = "0.0.0.0"
     
     print(f"Starting Manus MCP server on {host}:{port}")
-    print(f"MCP endpoint will be at: http://{host}:{port}/mcp")
+    print(f"SSE endpoint: http://{host}:{port}/sse")
+    print(f"Messages endpoint: http://{host}:{port}/messages/")
     
+    # Use SSE transport for Poke compatibility
     mcp.run(
-        transport="http",
+        transport="sse",
         host=host,
-        port=port,
-        stateless_http=True
+        port=port
     )
