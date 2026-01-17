@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Manus MCP Server for Poke - Render Deployment with SSE
+Manus MCP Server for Poke - Render Deployment
 Bridges Poke AI to Manus AI API using FastMCP
 """
 import os
@@ -130,17 +130,14 @@ def get_server_info() -> dict:
 
 
 @mcp.custom_route("/", methods=["GET"])
-async def root():
+async def root(request):
     """Root endpoint for browser access"""
     from starlette.responses import JSONResponse
     return JSONResponse({
         "status": "running",
         "server": "Manus MCP Server for Poke",
         "version": "1.0.0",
-        "endpoints": {
-            "sse": "/sse",
-            "messages": "/messages/"
-        },
+        "endpoint": "/mcp",
         "tools": ["create_task", "get_task_status", "list_tasks", "continue_task", "get_server_info"]
     })
 
@@ -150,12 +147,12 @@ if __name__ == "__main__":
     host = "0.0.0.0"
     
     print(f"Starting Manus MCP server on {host}:{port}")
-    print(f"SSE endpoint: http://{host}:{port}/sse")
-    print(f"Messages endpoint: http://{host}:{port}/messages/")
+    print(f"MCP endpoint: http://{host}:{port}/mcp")
     
-    # Use SSE transport for Poke compatibility
+    # Use HTTP transport with stateless mode for Poke
     mcp.run(
-        transport="sse",
+        transport="http",
         host=host,
-        port=port
+        port=port,
+        stateless_http=True
     )
